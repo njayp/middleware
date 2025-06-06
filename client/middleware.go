@@ -2,9 +2,6 @@ package client
 
 import (
 	"net/http"
-
-	"github.com/njayp/middleware/client/limiter"
-	"github.com/njayp/middleware/client/retry"
 )
 
 // BuildTransport constructs an http.RoundTripper with the provided middleware options.
@@ -21,15 +18,3 @@ func BuildTransport(opts ...Middleware) http.RoundTripper {
 }
 
 type Middleware func(http.RoundTripper) http.RoundTripper
-
-func WithLimiter(opts ...limiter.MiddlewareOpts) Middleware {
-	return func(rt http.RoundTripper) http.RoundTripper {
-		return limiter.NewMiddlewareRoundTripper(rt, opts...)
-	}
-}
-
-func WithRetries(opts ...retry.MiddlewareOpts) Middleware {
-	return func(rt http.RoundTripper) http.RoundTripper {
-		return retry.NewMiddlewareRoundTripper(rt, opts...)
-	}
-}

@@ -5,7 +5,14 @@ import (
 	"net/http"
 
 	"github.com/njayp/limiter/rate"
+	"github.com/njayp/middleware/client"
 )
+
+func WithLimiter(opts ...MiddlewareOpts) client.Middleware {
+	return func(rt http.RoundTripper) http.RoundTripper {
+		return NewMiddlewareRoundTripper(rt, opts...)
+	}
+}
 
 // MiddlewareRoundTripper is a middleware for http.RoundTripper
 // TODO different limiter per host

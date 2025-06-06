@@ -3,7 +3,15 @@ package retry
 import (
 	"log/slog"
 	"net/http"
+
+	"github.com/njayp/middleware/client"
 )
+
+func WithRetries(opts ...MiddlewareOpts) client.Middleware {
+	return func(rt http.RoundTripper) http.RoundTripper {
+		return NewMiddlewareRoundTripper(rt, opts...)
+	}
+}
 
 func NewMiddlewareRoundTripper(rt http.RoundTripper, opts ...MiddlewareOpts) *RetryRoundTripper {
 	props := NewMiddlewareProps(opts...)
